@@ -1,5 +1,18 @@
 package view;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.stage.FileChooser;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 public class MainForm extends javax.swing.JFrame {
 
     public MainForm() {
@@ -29,12 +42,12 @@ public class MainForm extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
-        jButton3 = new javax.swing.JButton();
+        jButtonMentes = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItemMentes = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
@@ -124,7 +137,12 @@ public class MainForm extends javax.swing.JFrame {
         jRadioButton2.setSelected(true);
         jRadioButton2.setText("lapok összértéke");
 
-        jButton3.setText("Mentés");
+        jButtonMentes.setText("Mentés");
+        jButtonMentes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMentesActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Kilépés");
 
@@ -137,7 +155,7 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCheckBox1)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3)
+                    .addComponent(jButtonMentes)
                     .addComponent(jRadioButton2)
                     .addComponent(jRadioButton1))
                 .addContainerGap())
@@ -150,7 +168,7 @@ public class MainForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jRadioButton2)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(jButtonMentes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jCheckBox1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -162,8 +180,13 @@ public class MainForm extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem2.setText("Mentés");
-        jMenu1.add(jMenuItem2);
+        jMenuItemMentes.setText("Mentés");
+        jMenuItemMentes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMentesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemMentes);
 
         jMenuItem1.setText("Kilépés");
         jMenu1.add(jMenuItem1);
@@ -220,6 +243,64 @@ public class MainForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonMentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMentesActionPerformed
+        try {
+            mentes();
+        } catch (IOException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonMentesActionPerformed
+
+    private void jMenuItemMentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMentesActionPerformed
+        try {
+            mentes();
+        } catch (IOException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItemMentesActionPerformed
+
+    public void mentes() throws IOException {
+        System.out.println("mentés");
+        JFrame parentFrame = new JFrame();
+
+        JFileChooser fc = new JFileChooser();
+
+        fc.setCurrentDirectory(new File("."));
+        fc.setDialogTitle("Mentés");
+        FileFilter txt = new FileNameExtensionFilter("txt", ".txt");
+        FileFilter jpg = new FileNameExtensionFilter("jpg", "*.jpg");
+        FileFilter gif = new FileNameExtensionFilter("gif", "*.gif");
+
+        fc.addChoosableFileFilter(txt);
+        fc.addChoosableFileFilter(jpg);
+        fc.addChoosableFileFilter(gif);
+
+        fc.setAcceptAllFileFilterUsed(true);
+
+        int valasz = fc.showSaveDialog(parentFrame);
+
+        if (valasz == JFileChooser.APPROVE_OPTION) {
+            String fileNev = fc.getSelectedFile().getName();
+            //String fileKiterjesztes = fc.getSelectedFile().get();
+
+            String szoveg = "Fájl neve:" + fileNev + "\nElérése:" + fc.getSelectedFile();
+            felugroAblak(szoveg);
+
+        }
+    }
+
+    private void felugroAblak(String uzenet) {
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("/view/res/ikon.jpg"));
+        
+        int valasz = JOptionPane.showConfirmDialog(rootPane, uzenet, "Kérdés", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, icon);
+
+        if (valasz == JOptionPane.CANCEL_OPTION) {
+            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        } else if (valasz == JOptionPane.OK_OPTION) {
+            System.exit(0);
+        }
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -256,8 +337,8 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButtonMentes;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -268,7 +349,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItemMentes;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
